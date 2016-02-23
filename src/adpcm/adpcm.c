@@ -826,10 +826,12 @@ int logsch(int ih,int nbh)
 
 
 #ifndef Seoul_Mate
+static int compressed[SIZE],result[SIZE*2];
+
 int benchmark()
 {
     int i,j,f/*,answer*/;
-    static int test_data[SIZE*2],compressed[SIZE],result[SIZE*2];
+    static int test_data[SIZE*2];
 
 /* reset, initialize required memory */
      reset();
@@ -883,5 +885,21 @@ printf("\n%4d %4d %4d %4d %4d",j,compressed[i/2] >> 6,compressed[i/2] & 63,resul
 
 #endif
 
-
-
+int verify_benchmark() {
+  // x86
+  // int expCompressed[SIZE] = {253, 132, 0};
+  // int expResult[IN_END] = {-1, 0, 0, -1};
+  // stm32vldiscovery
+  int expCompressed[SIZE] = {253, 32, 0};
+  int expResult[IN_END] = {0, -1, -1, 0};
+  int i;
+  for (i=0; i<SIZE; i++)
+    if (compressed[i] != expCompressed[i]) {
+      return 0;
+    }
+  for (i=0; i<IN_END; i++)
+    if (result[i] != expResult[i]) {
+      return 0;
+    }
+  return 1;
+}
