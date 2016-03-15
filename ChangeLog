@@ -1,3 +1,6 @@
+2016-03-15  Craig Blackmore <craig.blackmore@bristol.ac.uk>
+	Merge with henriko/master to include fix for aha-mont64.c
+
 2015-10-30  James Pallister  <james.pallister@bristol.ac.uk>
 	Added config files for the beaglebone
 
