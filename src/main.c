@@ -47,8 +47,10 @@ main (void)
   initialise_board ();
   start_trigger ();
 
-  for (i = 0; i < REPEAT_FACTOR; i++)
+  for (i = 0; i < REPEAT_FACTOR; i++) {
+    initialise_benchmark ();
     result = benchmark ();
+  }
 
   stop_trigger ();
 

@@ -322,7 +322,6 @@ benchmark(void)
 	return verify_benchmark(output, c, d, e[1]);
 }
 
-#include <stdio.h>
 int verify_benchmark(int *output, int c, int d, int e)
 {
 	int i;

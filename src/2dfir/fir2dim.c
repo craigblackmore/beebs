@@ -58,22 +58,21 @@
    benchmarks. */
 #define SCALE_FACTOR    (REPEAT_FACTOR >> 5)
 
-#define STORAGE_CLASS register
-#define TYPE          float
 #define IMAGEDIM      4
 #define ARRAYDIM      (IMAGEDIM + 2)
 #define COEFFICIENTS  3
-static TYPE  output[IMAGEDIM*IMAGEDIM] ={0};
+static float  output[IMAGEDIM*IMAGEDIM] ={0};
+static float  input[IMAGEDIM*IMAGEDIM];
 
 int benchmark()
 {
 
-   static TYPE  coefficients[COEFFICIENTS*COEFFICIENTS];
-   static TYPE  array[ARRAYDIM*ARRAYDIM] ={0} ;
+   static float  coefficients[COEFFICIENTS*COEFFICIENTS];
+   static float  array[ARRAYDIM*ARRAYDIM] ={0} ;
 
-   STORAGE_CLASS TYPE *parray  = &array[0], *parray2, *parray3 ;
-   STORAGE_CLASS TYPE *pcoeff  = &coefficients[0] ;
-   STORAGE_CLASS TYPE *poutput = &output[0]       ;
+   register float *parray  = &array[0], *parray2, *parray3 ;
+   register float *pcoeff  = &coefficients[0] ;
+   register float *poutput = &output[0]       ;
    int k, f, i;
 
    /* Start in the second row and second column to surround image with zeros */
@@ -84,7 +83,7 @@ int benchmark()
    for (i = 0 ; i < IMAGEDIM ; i++)
    {
       for (f = 0 ; f < IMAGEDIM ; f++)
-         *parray++ = 1;
+         *parray++ = input[i*IMAGEDIM + f];
 
       /* Ignore the first and last columns */
       parray += 2;
@@ -138,10 +137,17 @@ int benchmark()
    return 0;
 }
 
+// input image 4x4 all 1's
+void initialise_benchmark() {
+  int i;
+  for (i=0; i<IMAGEDIM*IMAGEDIM; i++)
+    input[i] = 1;
+}
+
 int verify_benchmark()
 {
-   static TYPE check_output[IMAGEDIM*IMAGEDIM] =
-   {4, 6, 6, 4, 6, 9, 9, 6, 6, 9, 9, 6, 4, 6, 6, 4};
+   static float check_output[IMAGEDIM*IMAGEDIM] =
+     {4, 6, 6, 4, 6, 9, 9, 6, 6, 9, 9, 6, 4, 6, 6, 4};
    int i;
 
    for (i = 0; i < IMAGEDIM*IMAGEDIM; i++) {

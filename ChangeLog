@@ -1,3 +1,23 @@
+2016-03-15  Craig Blackmore  <craig.blackmore@bristol.ac.uk>
+	Added initialise_benchmark which prevents compiler from optimising out
+	    input data (provide lto is disabled)
+	    from optimising on input data
+	Changed exit codes
+		0 = correct output (previously 1)
+		1 = incorrect output (previously 2)
+		-1 = no self-test implemented
+	Removed stdio.h included for debugging
+
+	* src/2dfir/fir2dim.c : added initialise_benchmark
+	* src/adpcm/adpcm.c : added initialise_benchmark
+	* src/bubblesort/bubblesort.c : added initialise_benchmark
+	* src/compress/compress.c : added initialise_benchmark
+	* src/ctl/ctl.c : removed stdio.h
+	* src/edn/edn.c : removed stdio.h
+	* src/main.c : added initialise_benchmark
+	* src/newlib-sqrt/ef_sqrt.c : added initialise_benchmark
+	* src/recursion/recursion.c : added initialise_benchmark
+
 2016-02-23  Craig Blackmore  <craig.blackmore@bristol.ac.uk>
 	Added verify_benchmark function to implement self-tests.
 	Initialised output_count in dijkstra.

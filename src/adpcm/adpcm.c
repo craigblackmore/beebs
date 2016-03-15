@@ -827,19 +827,20 @@ int logsch(int ih,int nbh)
 
 #ifndef Seoul_Mate
 static int compressed[SIZE],result[SIZE*2];
+int j,f;
 
 int benchmark()
 {
-    int i,j,f/*,answer*/;
+    int i/*,answer*/;
     static int test_data[SIZE*2];
 
 /* reset, initialize required memory */
      reset();
 
-/* read in amplitude and frequency for test data */
+/* j and f hold amplitude and frequency for test data */
     /*  scanf("%d",&j);
   scanf("%d",&f); */
-     j = 10; f = 2000;  /* körs men, används inte */
+     // j = 10; f = 2000;  /* körs men, används inte */
 
 /* 16 KHz sample rate */
     /* XXmain_0, MAX: 2 */
@@ -882,6 +883,11 @@ printf("\n%4d %4d %4d %4d %4d",j,compressed[i/2] >> 6,compressed[i/2] & 63,resul
     return result[i]+result[i+1];
 }
 
+// j = amplitude and f = frequency
+void initialise_benchmark() {
+  j = 10;
+  f = 2000;
+}
 
 #endif
 

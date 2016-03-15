@@ -71,7 +71,6 @@ typedef ctl_pairStack pair_container;
 #error "Expected CTL_VECTOR or CTL_STACK to be defined"
 #endif
 
-#include <stdio.h>
 int
 benchmark (void)
 {
