@@ -1,4 +1,9 @@
 2016-03-16  Craig Blackmore  <craig.blackmore@bristol.ac.uk>
+	Updated calibration for aha-mont64
+
+	* config/arm/boards/stm32vldiscovery/calibration : updated aha-mont64 calibration
+
+2016-03-16  Craig Blackmore  <craig.blackmore@bristol.ac.uk>
 	Merge with verify1
 		Added verify_benchmark function to implement self-tests.
     newlib-sqrt added result array so that the function calls are not
