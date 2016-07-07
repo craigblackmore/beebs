@@ -19,12 +19,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-platform_src = $(top_srcdir)/config/@ARCH@/boards/@BOARD@/boardsupport.c \
-               $(top_srcdir)/include/support.h \
-               $(top_srcdir)/src/main.c
+platform_src = board/boardsupport.c \
+               include/support.h \
+               main.c
 
 if CHIPSUPPORT_C
-platform_src += $(top_srcdir)/config/@ARCH@/chips/@CHIP@/chipsupport.c
+platform_src += chip/chipsupport.c
 endif
 
 # If there is a benchmark calibration file, this specifies the shifting
@@ -39,9 +39,9 @@ calib = echo 0
 endif
 
 AM_CFLAGS=$(WERROR_CFLAGS) $(WARN_CFLAGS) \
-		  -I $(top_srcdir)/include \
-		  -I $(top_srcdir)/config/@ARCH@/boards/@BOARD@/ \
-		  -I $(top_srcdir)/config/@ARCH@/chips/@CHIP@/ \
+		  -I $(top_srcdir)/src/$(bin_PROGRAMS)/include \
+		  -I $(top_srcdir)/src/$(bin_PROGRAMS)/board \
+		  -I $(top_srcdir)/src/$(bin_PROGRAMS)/chip \
 		  "-DCALIB_SCALE=$(shell $(calib))" \
 		  @CONFIG_CFLAGS@
 
