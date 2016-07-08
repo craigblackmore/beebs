@@ -1,3 +1,105 @@
+2016-07-08  Craig Blackmore  <craig.blackmore@bristol.ac.uk>
+  Back to using shared common files
+
+  Found a cleaner way to satisfy MAGEEC's needs for producing unique
+  compilation IDs (i.e. no two source paths can be the same). Each
+  common file is now referenced relative to src/<benchmark> rather than
+  absolute. This method removes the need to create lots of copies of
+  common files.
+
+  * Makefile.in: regenerated
+  * configure: regenerated
+  * configure.ac: remove copying of common files for each benchmark
+  * src/.gitignore: deleted - no more common file copies to ignore
+  * src/2dfir/Makefile.in: regenerated
+  * src/adpcm/Makefile.in: regenerated
+  * src/aha-compress/Makefile.in: regenerated
+  * src/aha-mont64/Makefile.in: regenerated
+  * src/blowfish/Makefile.in: regenerated
+  * src/bs/Makefile.in: regenerated
+  * src/bubblesort/Makefile.in: regenerated
+  * src/cnt/Makefile.in: regenerated
+  * src/common.mk.am: reference common files relative to
+      src/<benchmark>
+  * src/compress/Makefile.in: regenerated
+  * src/cover/Makefile.in: regenerated
+  * src/crc/Makefile.in: regenerated
+  * src/crc32/Makefile.in: regenerated
+  * src/ctl-stack/Makefile.in: regenerated
+  * src/ctl-string/Makefile.in: regenerated
+  * src/ctl-vector/Makefile.in: regenerated
+  * src/cubic/Makefile.in: regenerated
+  * src/dhrystone/Makefile.in: regenerated
+  * src/dijkstra/Makefile.in: regenerated
+  * src/dtoa/Makefile.in: regenerated
+  * src/duff/Makefile.in: regenerated
+  * src/edn/Makefile.in: regenerated
+  * src/expint/Makefile.in: regenerated
+  * src/fac/Makefile.in: regenerated
+  * src/fasta/Makefile.in: regenerated
+  * src/fdct/Makefile.in: regenerated
+  * src/fft/Makefile.in: regenerated
+  * src/fibcall/Makefile.in: regenerated
+  * src/fir/Makefile.in: regenerated
+  * src/frac/Makefile.in: regenerated
+  * src/huffbench/Makefile.in: regenerated
+  * src/insertsort/Makefile.in: regenerated
+  * src/janne_complex/Makefile.in: regenerated
+  * src/jfdctint/Makefile.in: regenerated
+  * src/lcdnum/Makefile.in: regenerated
+  * src/levenshtein/Makefile.in: regenerated
+  * src/lms/Makefile.in: regenerated
+  * src/ludcmp/Makefile.in: regenerated
+  * src/matmult-float/Makefile.in: regenerated
+  * src/matmult-int/Makefile.in: regenerated
+  * src/mergesort/Makefile.in: regenerated
+  * src/miniz/Makefile.in: regenerated
+  * src/minver/Makefile.in: regenerated
+  * src/nbody/Makefile.in: regenerated
+  * src/ndes/Makefile.in: regenerated
+  * src/nettle-arcfour/Makefile.in: regenerated
+  * src/nettle-cast128/Makefile.in: regenerated
+  * src/nettle-des/Makefile.in: regenerated
+  * src/nettle-md5/Makefile.in: regenerated
+  * src/newlib-exp/Makefile.in: regenerated
+  * src/newlib-log/Makefile.in: regenerated
+  * src/newlib-mod/Makefile.in: regenerated
+  * src/newlib-sqrt/Makefile.in: regenerated
+  * src/ns/Makefile.in: regenerated
+  * src/nsichneu/Makefile.in: regenerated
+  * src/picojpeg/Makefile.in: regenerated
+  * src/prime/Makefile.in: regenerated
+  * src/qrduino/Makefile.in: regenerated
+  * src/qsort/Makefile.in: regenerated
+  * src/qurt/Makefile.in: regenerated
+  * src/recursion/Makefile.in: regenerated
+  * src/rijndael/Makefile.in: regenerated
+  * src/select/Makefile.in: regenerated
+  * src/sglib-arraybinsearch/Makefile.in: regenerated
+  * src/sglib-arrayheapsort/Makefile.in: regenerated
+  * src/sglib-arrayquicksort/Makefile.in: regenerated
+  * src/sglib-dllist/Makefile.in: regenerated
+  * src/sglib-hashtable/Makefile.in: regenerated
+  * src/sglib-listinsertsort/Makefile.in: regenerated
+  * src/sglib-listsort/Makefile.in: regenerated
+  * src/sglib-queue/Makefile.in: regenerated
+  * src/sglib-rbtree/Makefile.in: regenerated
+  * src/sha/Makefile.in: regenerated
+  * src/slre/Makefile.in: regenerated
+  * src/sqrt/Makefile.in: regenerated
+  * src/st/Makefile.in: regenerated
+  * src/statemate/Makefile.in: regenerated
+  * src/stb_perlin/Makefile.in: regenerated
+  * src/stringsearch1/Makefile.in: regenerated
+  * src/strstr/Makefile.in: regenerated
+  * src/tarai/Makefile.in: regenerated
+  * src/template/Makefile.in: regenerated
+  * src/trio-snprintf/Makefile.in: regenerated
+  * src/trio-sscanf/Makefile.in: regenerated
+  * src/ud/Makefile.in: regenerated
+  * src/whetstone/Makefile.in: regenerated
+  * src/wikisort/Makefile.in: regenerated
+
 2016-07-07  Craig Blackmore  <craig.blackmore@bristol.ac.uk>
   Benchmarks are now self-contained
 

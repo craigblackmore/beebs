@@ -131,7 +131,7 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 bin_PROGRAMS = trio-snprintf$(EXEEXT)
-@CHIPSUPPORT_C_TRUE@am__append_1 = chip/chipsupport.c
+@CHIPSUPPORT_C_TRUE@am__append_1 = $(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c
 subdir = src/trio-snprintf
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
@@ -149,8 +149,10 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am__trio_snprintf_SOURCES_DIST = ../trio/trio.c ../trio/trio.h \
 	../trio/trio_test.c ../trio/triostr.c ../trio/triostr.h \
-	../trio/triodef.h ../trio/triop.h board/boardsupport.c \
-	include/support.h main.c chip/chipsupport.c
+	../trio/triodef.h ../trio/triop.h \
+	$(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c \
+	$(srcdir)/../../include/support.h $(srcdir)/../../src/main.c \
+	$(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c
 am__objects_1 = trio_snprintf-trio.$(OBJEXT) \
 	trio_snprintf-trio_test.$(OBJEXT) \
 	trio_snprintf-triostr.$(OBJEXT)
@@ -366,7 +368,9 @@ SRC = ../trio/trio.c ../trio/trio.h ../trio/trio_test.c \
     ../trio/triop.h
 
 trio_snprintf_SOURCES = ${SRC} ${platform_src}
-platform_src = board/boardsupport.c include/support.h main.c \
+platform_src =  \
+	$(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c \
+	$(srcdir)/../../include/support.h $(srcdir)/../../src/main.c \
 	$(am__append_1)
 @CALIBRATION_FALSE@calib = echo 0
 
@@ -374,16 +378,15 @@ platform_src = board/boardsupport.c include/support.h main.c \
 # of the repeat factor. If grep doesn't find the program, then we specify
 # 0 as the default. This is the default if a calibration file is not found
 @CALIBRATION_TRUE@calib = (egrep "^\b$(bin_PROGRAMS)\b" \
-@CALIBRATION_TRUE@	        $(top_srcdir)/config/@ARCH@/boards/@BOARD@/calibration \
+@CALIBRATION_TRUE@	        $(srcdir)/../../config/@ARCH@/boards/@BOARD@/calibration \
 @CALIBRATION_TRUE@		|| echo "0 0") | cut -d " " -f 2
 
-AM_CFLAGS = $(WERROR_CFLAGS) $(WARN_CFLAGS) -I \
-	$(top_srcdir)/src/$(bin_PROGRAMS)/include -I \
-	$(top_srcdir)/src/$(bin_PROGRAMS)/board -I \
-	$(top_srcdir)/src/$(bin_PROGRAMS)/chip "-DCALIB_SCALE=$(shell \
-	$(calib))" @CONFIG_CFLAGS@ -DTRIO_EXTENSION=0 \
-	-DTRIO_DEPRECATED=0 -DTRIO_MICROSOFT=0 -DTRIO_ERRORS=0 \
-	-DTRIO_FEATURE_FLOAT=0
+AM_CFLAGS = $(WERROR_CFLAGS) $(WARN_CFLAGS) -I $(srcdir)/../../include \
+	-I $(srcdir)/../../config/@ARCH@/boards/@BOARD@/ -I \
+	$(srcdir)/../../config/@ARCH@/chips/@CHIP@/ \
+	"-DCALIB_SCALE=$(shell $(calib))" @CONFIG_CFLAGS@ \
+	-DTRIO_EXTENSION=0 -DTRIO_DEPRECATED=0 -DTRIO_MICROSOFT=0 \
+	-DTRIO_ERRORS=0 -DTRIO_FEATURE_FLOAT=0
 AM_LDFLAGS = @CONFIG_LDFLAGS@
 trio_snprintf_CFLAGS = -DTRIO_SNPRINTF -DTRIO_SNPRINTF_ONLY ${AM_CFLAGS}
 all: all-am
@@ -550,47 +553,47 @@ trio_snprintf-triostr.obj: ../trio/triostr.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(trio_snprintf_CFLAGS) $(CFLAGS) -c -o trio_snprintf-triostr.obj `if test -f '../trio/triostr.c'; then $(CYGPATH_W) '../trio/triostr.c'; else $(CYGPATH_W) '$(srcdir)/../trio/triostr.c'; fi`
 
-trio_snprintf-boardsupport.o: board/boardsupport.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(trio_snprintf_CFLAGS) $(CFLAGS) -MT trio_snprintf-boardsupport.o -MD -MP -MF $(DEPDIR)/trio_snprintf-boardsupport.Tpo -c -o trio_snprintf-boardsupport.o `test -f 'board/boardsupport.c' || echo '$(srcdir)/'`board/boardsupport.c
+trio_snprintf-boardsupport.o: $(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(trio_snprintf_CFLAGS) $(CFLAGS) -MT trio_snprintf-boardsupport.o -MD -MP -MF $(DEPDIR)/trio_snprintf-boardsupport.Tpo -c -o trio_snprintf-boardsupport.o `test -f '$(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c' || echo '$(srcdir)/'`$(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/trio_snprintf-boardsupport.Tpo $(DEPDIR)/trio_snprintf-boardsupport.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='board/boardsupport.c' object='trio_snprintf-boardsupport.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c' object='trio_snprintf-boardsupport.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(trio_snprintf_CFLAGS) $(CFLAGS) -c -o trio_snprintf-boardsupport.o `test -f 'board/boardsupport.c' || echo '$(srcdir)/'`board/boardsupport.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(trio_snprintf_CFLAGS) $(CFLAGS) -c -o trio_snprintf-boardsupport.o `test -f '$(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c' || echo '$(srcdir)/'`$(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c
 
-trio_snprintf-boardsupport.obj: board/boardsupport.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(trio_snprintf_CFLAGS) $(CFLAGS) -MT trio_snprintf-boardsupport.obj -MD -MP -MF $(DEPDIR)/trio_snprintf-boardsupport.Tpo -c -o trio_snprintf-boardsupport.obj `if test -f 'board/boardsupport.c'; then $(CYGPATH_W) 'board/boardsupport.c'; else $(CYGPATH_W) '$(srcdir)/board/boardsupport.c'; fi`
+trio_snprintf-boardsupport.obj: $(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(trio_snprintf_CFLAGS) $(CFLAGS) -MT trio_snprintf-boardsupport.obj -MD -MP -MF $(DEPDIR)/trio_snprintf-boardsupport.Tpo -c -o trio_snprintf-boardsupport.obj `if test -f '$(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c'; then $(CYGPATH_W) '$(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c'; fi`
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/trio_snprintf-boardsupport.Tpo $(DEPDIR)/trio_snprintf-boardsupport.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='board/boardsupport.c' object='trio_snprintf-boardsupport.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c' object='trio_snprintf-boardsupport.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(trio_snprintf_CFLAGS) $(CFLAGS) -c -o trio_snprintf-boardsupport.obj `if test -f 'board/boardsupport.c'; then $(CYGPATH_W) 'board/boardsupport.c'; else $(CYGPATH_W) '$(srcdir)/board/boardsupport.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(trio_snprintf_CFLAGS) $(CFLAGS) -c -o trio_snprintf-boardsupport.obj `if test -f '$(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c'; then $(CYGPATH_W) '$(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c'; fi`
 
-trio_snprintf-main.o: main.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(trio_snprintf_CFLAGS) $(CFLAGS) -MT trio_snprintf-main.o -MD -MP -MF $(DEPDIR)/trio_snprintf-main.Tpo -c -o trio_snprintf-main.o `test -f 'main.c' || echo '$(srcdir)/'`main.c
+trio_snprintf-main.o: $(srcdir)/../../src/main.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(trio_snprintf_CFLAGS) $(CFLAGS) -MT trio_snprintf-main.o -MD -MP -MF $(DEPDIR)/trio_snprintf-main.Tpo -c -o trio_snprintf-main.o `test -f '$(srcdir)/../../src/main.c' || echo '$(srcdir)/'`$(srcdir)/../../src/main.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/trio_snprintf-main.Tpo $(DEPDIR)/trio_snprintf-main.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='main.c' object='trio_snprintf-main.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$(srcdir)/../../src/main.c' object='trio_snprintf-main.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(trio_snprintf_CFLAGS) $(CFLAGS) -c -o trio_snprintf-main.o `test -f 'main.c' || echo '$(srcdir)/'`main.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(trio_snprintf_CFLAGS) $(CFLAGS) -c -o trio_snprintf-main.o `test -f '$(srcdir)/../../src/main.c' || echo '$(srcdir)/'`$(srcdir)/../../src/main.c
 
-trio_snprintf-main.obj: main.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(trio_snprintf_CFLAGS) $(CFLAGS) -MT trio_snprintf-main.obj -MD -MP -MF $(DEPDIR)/trio_snprintf-main.Tpo -c -o trio_snprintf-main.obj `if test -f 'main.c'; then $(CYGPATH_W) 'main.c'; else $(CYGPATH_W) '$(srcdir)/main.c'; fi`
+trio_snprintf-main.obj: $(srcdir)/../../src/main.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(trio_snprintf_CFLAGS) $(CFLAGS) -MT trio_snprintf-main.obj -MD -MP -MF $(DEPDIR)/trio_snprintf-main.Tpo -c -o trio_snprintf-main.obj `if test -f '$(srcdir)/../../src/main.c'; then $(CYGPATH_W) '$(srcdir)/../../src/main.c'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/../../src/main.c'; fi`
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/trio_snprintf-main.Tpo $(DEPDIR)/trio_snprintf-main.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='main.c' object='trio_snprintf-main.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$(srcdir)/../../src/main.c' object='trio_snprintf-main.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(trio_snprintf_CFLAGS) $(CFLAGS) -c -o trio_snprintf-main.obj `if test -f 'main.c'; then $(CYGPATH_W) 'main.c'; else $(CYGPATH_W) '$(srcdir)/main.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(trio_snprintf_CFLAGS) $(CFLAGS) -c -o trio_snprintf-main.obj `if test -f '$(srcdir)/../../src/main.c'; then $(CYGPATH_W) '$(srcdir)/../../src/main.c'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/../../src/main.c'; fi`
 
-trio_snprintf-chipsupport.o: chip/chipsupport.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(trio_snprintf_CFLAGS) $(CFLAGS) -MT trio_snprintf-chipsupport.o -MD -MP -MF $(DEPDIR)/trio_snprintf-chipsupport.Tpo -c -o trio_snprintf-chipsupport.o `test -f 'chip/chipsupport.c' || echo '$(srcdir)/'`chip/chipsupport.c
+trio_snprintf-chipsupport.o: $(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(trio_snprintf_CFLAGS) $(CFLAGS) -MT trio_snprintf-chipsupport.o -MD -MP -MF $(DEPDIR)/trio_snprintf-chipsupport.Tpo -c -o trio_snprintf-chipsupport.o `test -f '$(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c' || echo '$(srcdir)/'`$(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/trio_snprintf-chipsupport.Tpo $(DEPDIR)/trio_snprintf-chipsupport.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='chip/chipsupport.c' object='trio_snprintf-chipsupport.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c' object='trio_snprintf-chipsupport.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(trio_snprintf_CFLAGS) $(CFLAGS) -c -o trio_snprintf-chipsupport.o `test -f 'chip/chipsupport.c' || echo '$(srcdir)/'`chip/chipsupport.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(trio_snprintf_CFLAGS) $(CFLAGS) -c -o trio_snprintf-chipsupport.o `test -f '$(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c' || echo '$(srcdir)/'`$(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c
 
-trio_snprintf-chipsupport.obj: chip/chipsupport.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(trio_snprintf_CFLAGS) $(CFLAGS) -MT trio_snprintf-chipsupport.obj -MD -MP -MF $(DEPDIR)/trio_snprintf-chipsupport.Tpo -c -o trio_snprintf-chipsupport.obj `if test -f 'chip/chipsupport.c'; then $(CYGPATH_W) 'chip/chipsupport.c'; else $(CYGPATH_W) '$(srcdir)/chip/chipsupport.c'; fi`
+trio_snprintf-chipsupport.obj: $(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(trio_snprintf_CFLAGS) $(CFLAGS) -MT trio_snprintf-chipsupport.obj -MD -MP -MF $(DEPDIR)/trio_snprintf-chipsupport.Tpo -c -o trio_snprintf-chipsupport.obj `if test -f '$(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c'; then $(CYGPATH_W) '$(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c'; fi`
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/trio_snprintf-chipsupport.Tpo $(DEPDIR)/trio_snprintf-chipsupport.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='chip/chipsupport.c' object='trio_snprintf-chipsupport.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c' object='trio_snprintf-chipsupport.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(trio_snprintf_CFLAGS) $(CFLAGS) -c -o trio_snprintf-chipsupport.obj `if test -f 'chip/chipsupport.c'; then $(CYGPATH_W) 'chip/chipsupport.c'; else $(CYGPATH_W) '$(srcdir)/chip/chipsupport.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(trio_snprintf_CFLAGS) $(CFLAGS) -c -o trio_snprintf-chipsupport.obj `if test -f '$(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c'; then $(CYGPATH_W) '$(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo

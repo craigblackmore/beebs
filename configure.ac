@@ -272,21 +272,6 @@ m4_foreach([benchmark], [benchmarklist], [
     bmark=benchmark
     if ! echo "$EXCLUDED_BENCHMARKS" | egrep -q "\b$bmark\b" ; then
         AC_CONFIG_FILES(src/benchmark/Makefile)
-        # link common files
-        # didn't work because links are always relative to builddir and not srcdir
-        # AC_CONFIG_LINKS(src/benchmark/include:$srcdir/include)
-        # AC_CONFIG_LINKS(src/benchmark/board:config/$arch/boards/$board)
-        # AC_CONFIG_LINKS(src/benchmark/chip:config/$arch/chips/$chip)
-        # AC_CONFIG_LINKS(src/benchmark/main.cl:src/main.c)
-        # give each benchmark its own copy of common support, board and chip files
-        # this so that each benchmark is completely self-contained and not sharing any
-        # common files - a property needed by MAGEEC
-        AC_CONFIG_FILES($srcdir/src/benchmark/include/support.h:$srcdir/include/support.h)
-        AC_CONFIG_FILES($srcdir/src/benchmark/board/boardsupport.c:config/$arch/boards/$board/boardsupport.c)
-        AC_CONFIG_FILES($srcdir/src/benchmark/chip/chip.cfg:config/$arch/chips/$chip/chip.cfg)
-        AC_CONFIG_FILES($srcdir/src/benchmark/chip/chipsupport.c:config/$arch/chips/$chip/chipsupport.c)
-        AC_CONFIG_FILES($srcdir/src/benchmark/chip/chipsupport.h:config/$arch/chips/$chip/chipsupport.h)
-        AC_CONFIG_FILES($srcdir/src/benchmark/main.c:src/main.c)
         BENCHMARKS+="benchmark "
         BENCHMARKS_SUBDIRS+="src/benchmark "
 
@@ -310,13 +295,6 @@ AC_CONFIG_HEADERS([config.h])
 
 AC_CONFIG_FILES([dejagnu/site.exp])
 AC_CONFIG_FILES([src/template/Makefile])
-# give template a copy of common files to prevent make error
-AC_CONFIG_FILES($srcdir/src/template/include/support.h:$srcdir/include/support.h)
-AC_CONFIG_FILES($srcdir/src/template/board/boardsupport.c:config/$arch/boards/$board/boardsupport.c)
-AC_CONFIG_FILES($srcdir/src/template/chip/chip.cfg:config/$arch/chips/$chip/chip.cfg)
-AC_CONFIG_FILES($srcdir/src/template/chip/chipsupport.c:config/$arch/chips/$chip/chipsupport.c)
-AC_CONFIG_FILES($srcdir/src/template/chip/chipsupport.h:config/$arch/chips/$chip/chipsupport.h)
-AC_CONFIG_FILES($srcdir/src/template/main.c:src/main.c)
 AC_CONFIG_FILES([doc/Makefile])
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT

@@ -131,7 +131,7 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 bin_PROGRAMS = sglib-arrayquicksort$(EXEEXT)
-@CHIPSUPPORT_C_TRUE@am__append_1 = chip/chipsupport.c
+@CHIPSUPPORT_C_TRUE@am__append_1 = $(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c
 subdir = src/sglib-arrayquicksort
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
@@ -149,8 +149,9 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am__sglib_arrayquicksort_SOURCES_DIST =  \
 	../sglib-arraysort/arraysort.c ../sglib-arraysort/sglib.h \
-	board/boardsupport.c include/support.h main.c \
-	chip/chipsupport.c
+	$(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c \
+	$(srcdir)/../../include/support.h $(srcdir)/../../src/main.c \
+	$(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c
 @CHIPSUPPORT_C_TRUE@am__objects_1 = sglib_arrayquicksort-chipsupport.$(OBJEXT)
 am__objects_2 = sglib_arrayquicksort-boardsupport.$(OBJEXT) \
 	sglib_arrayquicksort-main.$(OBJEXT) $(am__objects_1)
@@ -361,7 +362,9 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 sglib_arrayquicksort_SOURCES = ../sglib-arraysort/arraysort.c \
 	../sglib-arraysort/sglib.h ${platform_src}
-platform_src = board/boardsupport.c include/support.h main.c \
+platform_src =  \
+	$(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c \
+	$(srcdir)/../../include/support.h $(srcdir)/../../src/main.c \
 	$(am__append_1)
 @CALIBRATION_FALSE@calib = echo 0
 
@@ -369,13 +372,13 @@ platform_src = board/boardsupport.c include/support.h main.c \
 # of the repeat factor. If grep doesn't find the program, then we specify
 # 0 as the default. This is the default if a calibration file is not found
 @CALIBRATION_TRUE@calib = (egrep "^\b$(bin_PROGRAMS)\b" \
-@CALIBRATION_TRUE@	        $(top_srcdir)/config/@ARCH@/boards/@BOARD@/calibration \
+@CALIBRATION_TRUE@	        $(srcdir)/../../config/@ARCH@/boards/@BOARD@/calibration \
 @CALIBRATION_TRUE@		|| echo "0 0") | cut -d " " -f 2
 
 AM_CFLAGS = $(WERROR_CFLAGS) $(WARN_CFLAGS) \
-		  -I $(top_srcdir)/src/$(bin_PROGRAMS)/include \
-		  -I $(top_srcdir)/src/$(bin_PROGRAMS)/board \
-		  -I $(top_srcdir)/src/$(bin_PROGRAMS)/chip \
+		  -I $(srcdir)/../../include \
+		  -I $(srcdir)/../../config/@ARCH@/boards/@BOARD@/ \
+		  -I $(srcdir)/../../config/@ARCH@/chips/@CHIP@/ \
 		  "-DCALIB_SCALE=$(shell $(calib))" \
 		  @CONFIG_CFLAGS@
 
@@ -515,47 +518,47 @@ sglib_arrayquicksort-arraysort.obj: ../sglib-arraysort/arraysort.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sglib_arrayquicksort_CFLAGS) $(CFLAGS) -c -o sglib_arrayquicksort-arraysort.obj `if test -f '../sglib-arraysort/arraysort.c'; then $(CYGPATH_W) '../sglib-arraysort/arraysort.c'; else $(CYGPATH_W) '$(srcdir)/../sglib-arraysort/arraysort.c'; fi`
 
-sglib_arrayquicksort-boardsupport.o: board/boardsupport.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sglib_arrayquicksort_CFLAGS) $(CFLAGS) -MT sglib_arrayquicksort-boardsupport.o -MD -MP -MF $(DEPDIR)/sglib_arrayquicksort-boardsupport.Tpo -c -o sglib_arrayquicksort-boardsupport.o `test -f 'board/boardsupport.c' || echo '$(srcdir)/'`board/boardsupport.c
+sglib_arrayquicksort-boardsupport.o: $(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sglib_arrayquicksort_CFLAGS) $(CFLAGS) -MT sglib_arrayquicksort-boardsupport.o -MD -MP -MF $(DEPDIR)/sglib_arrayquicksort-boardsupport.Tpo -c -o sglib_arrayquicksort-boardsupport.o `test -f '$(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c' || echo '$(srcdir)/'`$(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/sglib_arrayquicksort-boardsupport.Tpo $(DEPDIR)/sglib_arrayquicksort-boardsupport.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='board/boardsupport.c' object='sglib_arrayquicksort-boardsupport.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c' object='sglib_arrayquicksort-boardsupport.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sglib_arrayquicksort_CFLAGS) $(CFLAGS) -c -o sglib_arrayquicksort-boardsupport.o `test -f 'board/boardsupport.c' || echo '$(srcdir)/'`board/boardsupport.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sglib_arrayquicksort_CFLAGS) $(CFLAGS) -c -o sglib_arrayquicksort-boardsupport.o `test -f '$(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c' || echo '$(srcdir)/'`$(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c
 
-sglib_arrayquicksort-boardsupport.obj: board/boardsupport.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sglib_arrayquicksort_CFLAGS) $(CFLAGS) -MT sglib_arrayquicksort-boardsupport.obj -MD -MP -MF $(DEPDIR)/sglib_arrayquicksort-boardsupport.Tpo -c -o sglib_arrayquicksort-boardsupport.obj `if test -f 'board/boardsupport.c'; then $(CYGPATH_W) 'board/boardsupport.c'; else $(CYGPATH_W) '$(srcdir)/board/boardsupport.c'; fi`
+sglib_arrayquicksort-boardsupport.obj: $(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sglib_arrayquicksort_CFLAGS) $(CFLAGS) -MT sglib_arrayquicksort-boardsupport.obj -MD -MP -MF $(DEPDIR)/sglib_arrayquicksort-boardsupport.Tpo -c -o sglib_arrayquicksort-boardsupport.obj `if test -f '$(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c'; then $(CYGPATH_W) '$(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c'; fi`
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/sglib_arrayquicksort-boardsupport.Tpo $(DEPDIR)/sglib_arrayquicksort-boardsupport.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='board/boardsupport.c' object='sglib_arrayquicksort-boardsupport.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c' object='sglib_arrayquicksort-boardsupport.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sglib_arrayquicksort_CFLAGS) $(CFLAGS) -c -o sglib_arrayquicksort-boardsupport.obj `if test -f 'board/boardsupport.c'; then $(CYGPATH_W) 'board/boardsupport.c'; else $(CYGPATH_W) '$(srcdir)/board/boardsupport.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sglib_arrayquicksort_CFLAGS) $(CFLAGS) -c -o sglib_arrayquicksort-boardsupport.obj `if test -f '$(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c'; then $(CYGPATH_W) '$(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/../../config/@ARCH@/boards/@BOARD@/boardsupport.c'; fi`
 
-sglib_arrayquicksort-main.o: main.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sglib_arrayquicksort_CFLAGS) $(CFLAGS) -MT sglib_arrayquicksort-main.o -MD -MP -MF $(DEPDIR)/sglib_arrayquicksort-main.Tpo -c -o sglib_arrayquicksort-main.o `test -f 'main.c' || echo '$(srcdir)/'`main.c
+sglib_arrayquicksort-main.o: $(srcdir)/../../src/main.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sglib_arrayquicksort_CFLAGS) $(CFLAGS) -MT sglib_arrayquicksort-main.o -MD -MP -MF $(DEPDIR)/sglib_arrayquicksort-main.Tpo -c -o sglib_arrayquicksort-main.o `test -f '$(srcdir)/../../src/main.c' || echo '$(srcdir)/'`$(srcdir)/../../src/main.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/sglib_arrayquicksort-main.Tpo $(DEPDIR)/sglib_arrayquicksort-main.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='main.c' object='sglib_arrayquicksort-main.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$(srcdir)/../../src/main.c' object='sglib_arrayquicksort-main.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sglib_arrayquicksort_CFLAGS) $(CFLAGS) -c -o sglib_arrayquicksort-main.o `test -f 'main.c' || echo '$(srcdir)/'`main.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sglib_arrayquicksort_CFLAGS) $(CFLAGS) -c -o sglib_arrayquicksort-main.o `test -f '$(srcdir)/../../src/main.c' || echo '$(srcdir)/'`$(srcdir)/../../src/main.c
 
-sglib_arrayquicksort-main.obj: main.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sglib_arrayquicksort_CFLAGS) $(CFLAGS) -MT sglib_arrayquicksort-main.obj -MD -MP -MF $(DEPDIR)/sglib_arrayquicksort-main.Tpo -c -o sglib_arrayquicksort-main.obj `if test -f 'main.c'; then $(CYGPATH_W) 'main.c'; else $(CYGPATH_W) '$(srcdir)/main.c'; fi`
+sglib_arrayquicksort-main.obj: $(srcdir)/../../src/main.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sglib_arrayquicksort_CFLAGS) $(CFLAGS) -MT sglib_arrayquicksort-main.obj -MD -MP -MF $(DEPDIR)/sglib_arrayquicksort-main.Tpo -c -o sglib_arrayquicksort-main.obj `if test -f '$(srcdir)/../../src/main.c'; then $(CYGPATH_W) '$(srcdir)/../../src/main.c'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/../../src/main.c'; fi`
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/sglib_arrayquicksort-main.Tpo $(DEPDIR)/sglib_arrayquicksort-main.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='main.c' object='sglib_arrayquicksort-main.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$(srcdir)/../../src/main.c' object='sglib_arrayquicksort-main.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sglib_arrayquicksort_CFLAGS) $(CFLAGS) -c -o sglib_arrayquicksort-main.obj `if test -f 'main.c'; then $(CYGPATH_W) 'main.c'; else $(CYGPATH_W) '$(srcdir)/main.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sglib_arrayquicksort_CFLAGS) $(CFLAGS) -c -o sglib_arrayquicksort-main.obj `if test -f '$(srcdir)/../../src/main.c'; then $(CYGPATH_W) '$(srcdir)/../../src/main.c'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/../../src/main.c'; fi`
 
-sglib_arrayquicksort-chipsupport.o: chip/chipsupport.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sglib_arrayquicksort_CFLAGS) $(CFLAGS) -MT sglib_arrayquicksort-chipsupport.o -MD -MP -MF $(DEPDIR)/sglib_arrayquicksort-chipsupport.Tpo -c -o sglib_arrayquicksort-chipsupport.o `test -f 'chip/chipsupport.c' || echo '$(srcdir)/'`chip/chipsupport.c
+sglib_arrayquicksort-chipsupport.o: $(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sglib_arrayquicksort_CFLAGS) $(CFLAGS) -MT sglib_arrayquicksort-chipsupport.o -MD -MP -MF $(DEPDIR)/sglib_arrayquicksort-chipsupport.Tpo -c -o sglib_arrayquicksort-chipsupport.o `test -f '$(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c' || echo '$(srcdir)/'`$(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/sglib_arrayquicksort-chipsupport.Tpo $(DEPDIR)/sglib_arrayquicksort-chipsupport.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='chip/chipsupport.c' object='sglib_arrayquicksort-chipsupport.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c' object='sglib_arrayquicksort-chipsupport.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sglib_arrayquicksort_CFLAGS) $(CFLAGS) -c -o sglib_arrayquicksort-chipsupport.o `test -f 'chip/chipsupport.c' || echo '$(srcdir)/'`chip/chipsupport.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sglib_arrayquicksort_CFLAGS) $(CFLAGS) -c -o sglib_arrayquicksort-chipsupport.o `test -f '$(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c' || echo '$(srcdir)/'`$(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c
 
-sglib_arrayquicksort-chipsupport.obj: chip/chipsupport.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sglib_arrayquicksort_CFLAGS) $(CFLAGS) -MT sglib_arrayquicksort-chipsupport.obj -MD -MP -MF $(DEPDIR)/sglib_arrayquicksort-chipsupport.Tpo -c -o sglib_arrayquicksort-chipsupport.obj `if test -f 'chip/chipsupport.c'; then $(CYGPATH_W) 'chip/chipsupport.c'; else $(CYGPATH_W) '$(srcdir)/chip/chipsupport.c'; fi`
+sglib_arrayquicksort-chipsupport.obj: $(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sglib_arrayquicksort_CFLAGS) $(CFLAGS) -MT sglib_arrayquicksort-chipsupport.obj -MD -MP -MF $(DEPDIR)/sglib_arrayquicksort-chipsupport.Tpo -c -o sglib_arrayquicksort-chipsupport.obj `if test -f '$(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c'; then $(CYGPATH_W) '$(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c'; fi`
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/sglib_arrayquicksort-chipsupport.Tpo $(DEPDIR)/sglib_arrayquicksort-chipsupport.Po
-@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='chip/chipsupport.c' object='sglib_arrayquicksort-chipsupport.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='$(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c' object='sglib_arrayquicksort-chipsupport.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sglib_arrayquicksort_CFLAGS) $(CFLAGS) -c -o sglib_arrayquicksort-chipsupport.obj `if test -f 'chip/chipsupport.c'; then $(CYGPATH_W) 'chip/chipsupport.c'; else $(CYGPATH_W) '$(srcdir)/chip/chipsupport.c'; fi`
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(sglib_arrayquicksort_CFLAGS) $(CFLAGS) -c -o sglib_arrayquicksort-chipsupport.obj `if test -f '$(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c'; then $(CYGPATH_W) '$(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c'; else $(CYGPATH_W) '$(srcdir)/$(srcdir)/../../config/@ARCH@/chips/@CHIP@/chipsupport.c'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo
