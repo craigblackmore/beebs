@@ -1066,23 +1066,28 @@ int foo(int x)
 
 
 
-
+static int x;
 
 int
 benchmark(void)
 {
 
+  int result;
+  result = foo(x);
+
 #ifdef TEST
 
-  printf("result=%d\n",foo(400));
+  printf("result=%d\n",result);
 
-#else
+// #else
 
-  foo(400);
+//   foo(x);
 
 #endif
 
-  return 0;
+  return result;
 }
 
-
+void initialise_benchmark() {
+  x = 400;
+}

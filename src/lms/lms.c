@@ -194,6 +194,8 @@ static float gaussian()
     return(gaus);
 }
 
+static float in_x;
+
 int benchmark()
 {
     float lms(float,float,float *,int,float,float);
@@ -212,7 +214,7 @@ int benchmark()
     /* scale based on L */
     mu = 2.0*mu/(L+1);
 
-    x = 0.0;
+    x = in_x;
     for(k = 0 ; k < N ; k++) {
         lms(x,d[k],b,L,mu,0.01);
     /* delay x one sample */
@@ -271,4 +273,8 @@ float lms(float x,float d,float *b,int l,
         px[ll]=px[ll-1];
 
     return(y);
+}
+
+void initialise_benchmark() {
+  in_x = 0.0;
 }

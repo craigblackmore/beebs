@@ -109,7 +109,9 @@ static double cos(double rad)
 
 int benchmark()
 {
-    int  i, n = 8, flag, chkerr;
+    int  i, flag;
+    volatile int n = 8;
+    volatile int chkerr;
 
     /* ar  */
     for(i = 0; i < n; i++)

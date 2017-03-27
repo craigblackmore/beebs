@@ -122,17 +122,25 @@ static const float zero   =  0.0;
 #define SCALE_FACTOR    (REPEAT_FACTOR >> 0)
 
 /* Tell the compiler not to optimize out calls in BENCHMARK. */
-volatile float result = 0;
+volatile float result[5];
+static int a, b, c, d, e;
 
 int
 benchmark (void)
 {
-  result = __ieee754_logf(2);
-  result = __ieee754_logf(3);
-  result = __ieee754_logf(4);
-  result = __ieee754_logf(5);
-  result = __ieee754_logf(6);
+  result[0] = __ieee754_logf(a);
+  result[1] = __ieee754_logf(b);
+  result[2] = __ieee754_logf(c);
+  result[3] = __ieee754_logf(d);
+  result[4] = __ieee754_logf(e);
   return 0;
 }
 
+void initialise_benchmark() {
+  a = 2;
+  b = 3;
+  c = 4;
+  d = 5;
+  e = 6;
+}
 

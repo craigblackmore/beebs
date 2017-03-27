@@ -149,17 +149,30 @@ static const float one = 1.0, Zero[] = {0.0, -0.0,};
 #define SCALE_FACTOR    (REPEAT_FACTOR >> 0)
 
 /* Tell the compiler not to optimize out calls in BENCHMARK. */
-volatile float result = 0;
+volatile float result[5];
+static float a1, b1, c1, d1, e1;
+static float a2, b2, c2, d2, e2;
 
 int
 benchmark (void)
 {
-  result = __ieee754_fmodf(2.2353, 1234.5);
-  result = __ieee754_fmodf(3.2515, 2345.6);
-  result = __ieee754_fmodf(4.9346, 3456.7);
-  result = __ieee754_fmodf(5.2342, 4567.8);
-  result = __ieee754_fmodf(6.2352, 5678.9);
+  result[0] = __ieee754_fmodf(a1, a2);
+  result[1] = __ieee754_fmodf(b1, b2);
+  result[2] = __ieee754_fmodf(c1, c2);
+  result[3] = __ieee754_fmodf(d1, d2);
+  result[4] = __ieee754_fmodf(e1, e2);
   return 0;
 }
 
-
+void initialise_benchmark() {
+  a1 = 2.2353;
+  b1 = 3.2515;
+  c1 = 4.9346;
+  d1 = 5.2342;
+  e1 = 6.2352;
+  a2 = 1234.5;
+  b2 = 2345.6;
+  c2 = 3456.7;
+  d2 = 4567.8;
+  e2 = 5678.9;
+}

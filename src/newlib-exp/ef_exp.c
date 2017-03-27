@@ -134,17 +134,25 @@ P5   =  4.1381369442e-08; /* 0x3331bb4c */
 #define SCALE_FACTOR    (REPEAT_FACTOR >> 0)
 
 /* Tell the compiler not to optimize out calls in BENCHMARK. */
-volatile float result = 0;
+volatile float result[5];
+static int a, b, c, d, e;
 
 int
 benchmark (void)
 {
-  result = __ieee754_expf(1);
-  result = __ieee754_expf(2);
-  result = __ieee754_expf(3);
-  result = __ieee754_expf(4);
-  result = __ieee754_expf(5);
+  result[0] = __ieee754_expf(a);
+  result[1] = __ieee754_expf(b);
+  result[2] = __ieee754_expf(c);
+  result[3] = __ieee754_expf(d);
+  result[4] = __ieee754_expf(e);
   return 0;
 }
 
 
+void initialise_benchmark() {
+  a = 1;
+  b = 2;
+  c = 3;
+  d = 4;
+  e = 5;
+}

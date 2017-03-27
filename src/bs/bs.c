@@ -108,9 +108,21 @@ binary_search(int x)
   return fvalue;
 }
 
+static int x;
+
 int benchmark()
 {
-  binary_search(8);
-  return 0;
+  return binary_search(x);
 }
 
+void initialise_benchmark() {
+  x = 8;
+}
+
+int verify_benchmark(int r)
+{
+  int expected = 900;
+  if (r != expected)
+    return 0;
+  return 1;
+}

@@ -24,12 +24,13 @@
    benchmarks. */
 #define SCALE_FACTOR    (REPEAT_FACTOR >> 13)
 
+static double  a1, b1, c1, d1;
+static double  a2, b2, c2, d2;
+static double  a3, b3, c3, d3;
+static double  a4, b4, c4, d4;
+
 int benchmark(void)
 {
-   double  a1 = 1.0, b1 = -10.5, c1 = 32.0, d1 = -30.0;
-   double  a2 = 1.0, b2 = -4.5, c2 = 17.0, d2 = -30.0;
-   double  a3 = 1.0, b3 = -3.5, c3 = 22.0, d3 = -31.0;
-   double  a4 = 1.0, b4 = -13.7, c4 = 1.0, d4 = -35.0;
    int     solutions;
 
    double output[48] = {0};
@@ -56,5 +57,11 @@ int benchmark(void)
    return 0;
 }
 
+void initialise_benchmark() {
+   a1 = 1.0, b1 = -10.5, c1 = 32.0, d1 = -30.0;
+   a2 = 1.0, b2 = -4.5, c2 = 17.0, d2 = -30.0;
+   a3 = 1.0, b3 = -3.5, c3 = 22.0, d3 = -31.0;
+   a4 = 1.0, b4 = -13.7, c4 = 1.0, d4 = -35.0;
+}
 
 /* vim: set ts=3 sw=3 et: */
